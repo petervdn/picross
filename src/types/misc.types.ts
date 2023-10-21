@@ -9,14 +9,21 @@ type BoardGroupConfig = {
   rules: Array<Array<number>>;
 };
 
+export type BoardPosition = {
+  row: number;
+  column: number;
+};
+
 export type Position = {
   x: number;
   y: number;
 };
 
+export type BoardItemState = 'filled' | 'crossed' | 'temporary';
+
 export type BoardItem = {
   position: Position;
-  state: 'filled' | 'crossed' | 'temporary';
+  state: BoardItemState;
 };
 
 export type GameState = {
