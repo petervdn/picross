@@ -1,0 +1,9 @@
+.wrap  {
+    background-color: red;
+    display: flex;
+    padding-left: 200px;
+
+    .column {
+        background-color: aqua;
+    }
+}
