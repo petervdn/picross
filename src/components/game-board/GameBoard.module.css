@@ -1,17 +1,13 @@
 .wrap {
     width: 800px;
     margin: 0 auto;
-    background-color: cadetblue;
 }
 
 .row {
-    background-color: lightsteelblue;
     display: flex;
 }
 
 .boardItem {
-    width: 30px;
-    height: 30px;
-    background-color: indianred;
-    border: 1px solid black;
+    box-sizing: border-box;
+    border: 1px solid white;
 }

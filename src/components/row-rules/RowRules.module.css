@@ -1,11 +1,11 @@
 
 .rules {
-    background-color: antiquewhite;
     width: 200px;
     display: flex;
     justify-content: flex-end;
+    align-items:center;
 
     .rule {
-       margin-right: 5px
+       margin-right: 5px;
     }
 }

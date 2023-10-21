@@ -1,5 +1,5 @@
 import styles from './RowRules.module.css';
-import { useGameStore } from '@/store/gameStore';
+import { useGameStore } from '@/store/game.store';
 
 type Props = {
   row: number;

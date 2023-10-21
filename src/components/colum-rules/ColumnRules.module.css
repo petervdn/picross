@@ -1,9 +1,15 @@
 .wrap  {
-    background-color: red;
+
     display: flex;
     padding-left: 200px;
 
     .column {
-        background-color: aqua;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        .item {
+            text-align: center;
+        }
     }
 }

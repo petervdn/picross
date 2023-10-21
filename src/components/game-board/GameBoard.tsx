@@ -4,7 +4,7 @@ import styles from './GameBoard.module.css';
 import { GameBoardItem } from '@/components/game-board-item/GameBoardItem';
 import { RowRules } from '@/components/row-rules/RowRules';
 import { ColumnRules } from '@/components/colum-rules/ColumnRules';
-import { useGameStore } from '@/store/gameStore';
+import { useGameStore } from '@/store/game.store';
 
 export function GameBoard() {
   const { numberOfColumns, numberOfRows } = useGameStore();

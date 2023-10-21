@@ -19,6 +19,6 @@ export const useGameStore = create<GameStore>((set) => ({
       [1, 2],
       [2, 3],
     ],
-    columns: [],
+    columns: [[1, 2], [], [], [2, 3, 5, 6]],
   },
 }));
