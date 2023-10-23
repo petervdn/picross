@@ -1,9 +1,9 @@
 import styles from '@/components/game-board/GameBoard.module.css';
 import { useLayoutStore } from '@/store/layout.store';
-import { BoardPosition } from '@/types/misc.types';
 import { useBoardItemState } from '@/utils/hooks/useBoardItemState';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useGameStore } from '@/store/game.store';
+import { BoardItemState } from '@/types/misc.types';
 
 type Props = {
   row: number;
@@ -16,8 +16,20 @@ export function GameBoardItem({ row, column }: Props) {
   const itemState = useBoardItemState({ boardPosition: { column, row } });
 
   const onClick = useCallback(() => {
-    setItemState({ boardPosition: { row, column }, itemState: 'filled' });
-  }, [column, row, setItemState]);
+    let newState: BoardItemState | undefined;
+    if (itemState === undefined) {
+      newState = 'filled';
+    } else if (itemState === 'filled') {
+      newState = 'crossed';
+    }
+
+    setItemState({ boardPosition: { row, column }, itemState: newState });
+  }, [column, itemState, row, setItemState]);
+
+  const content = useMemo(
+    () => (itemState === 'crossed' ? 'X' : itemState === 'filled' ? '■' : ''),
+    [itemState],
+  );
 
   return (
     <div
@@ -25,7 +37,7 @@ export function GameBoardItem({ row, column }: Props) {
       style={{ width: itemSize, height: itemSize }}
       onClick={onClick}
     >
-      {itemState}
+      {content}
     </div>
   );
 }

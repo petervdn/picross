@@ -6,6 +6,9 @@
     align-items:center;
 
     .rule {
-       margin-right: 5px;
+        margin-right: 5px;
+    }
+    .rule.options {
+        opacity: 0.3;
     }
 }

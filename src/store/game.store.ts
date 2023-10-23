@@ -12,8 +12,11 @@ type GameStore = {
     rows: GroupRules;
     columns: GroupRules;
   };
-  itemStates: Record<BoardPositionKey, BoardItemState>;
-  setItemState: (props: { boardPosition: BoardPosition; itemState: BoardItemState }) => void;
+  itemStates: Record<BoardPositionKey, BoardItemState | undefined>;
+  setItemState: (props: {
+    boardPosition: BoardPosition;
+    itemState: BoardItemState | undefined;
+  }) => void;
 };
 
 export const useGameStore = create<GameStore>((set) => ({
@@ -21,10 +24,29 @@ export const useGameStore = create<GameStore>((set) => ({
   numberOfRows: 10,
   rules: {
     rows: [
-      [1, 2],
+      [2, 4],
+      [9],
+      [2, 1, 3],
+      [1, 1, 2],
+      [1, 1, 2],
       [2, 3],
+      [1, 4, 1],
+      [2, 3, 1],
+      [2, 1, 2],
+      [1, 1, 2],
     ],
-    columns: [[1, 2], [], [], [2, 3, 5, 6]],
+    columns: [
+      [1, 1],
+      [4, 3],
+      [3, 1, 1],
+      [2, 3, 1, 1],
+      [2, 2],
+      [2, 4],
+      [2, 2, 1],
+      [3, 2],
+      [6, 2],
+      [4, 1, 1],
+    ],
   },
   itemStates: {},
   setItemState: ({ itemState, boardPosition }) =>

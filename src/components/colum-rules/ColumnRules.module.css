@@ -11,5 +11,9 @@
         .item {
             text-align: center;
         }
+
+        .item.options {
+            opacity: 0.3;
+        }
     }
 }
