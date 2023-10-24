@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { useGameStore } from '@/store/game.store';
 import { BoardItemState } from '@/types/misc.types';
 import classNames from 'classnames';
+import { useInteractionStore } from '@/store/interaction.store';
 
 type Props = {
   row: number;
@@ -18,19 +19,16 @@ export function GameBoardItem({ row, column }: Props) {
       boardItemMargin,
     }),
   );
+  const { interactionMode } = useInteractionStore(({ interactionMode }) => ({ interactionMode }));
   const setItemState = useGameStore((state) => state.setItemState);
   const itemState = useBoardItemState({ boardPosition: { column, row } });
 
   const onClick = useCallback(() => {
-    let newState: BoardItemState | undefined;
-    if (itemState === undefined) {
-      newState = 'filled';
-    } else if (itemState === 'filled') {
-      newState = 'crossed';
-    }
-
-    setItemState({ boardPosition: { row, column }, itemState: newState });
-  }, [column, itemState, row, setItemState]);
+    setItemState({
+      boardPosition: { row, column },
+      itemState: itemState === undefined ? interactionMode : undefined,
+    });
+  }, [column, interactionMode, itemState, row, setItemState]);
 
   const className = useMemo(() => {
     if (itemState === 'crossed') {
@@ -38,6 +36,9 @@ export function GameBoardItem({ row, column }: Props) {
     }
     if (itemState === 'filled') {
       return 'enabled';
+    }
+    if (itemState === 'temporary') {
+      return 'temporary';
     }
   }, [itemState]);
 

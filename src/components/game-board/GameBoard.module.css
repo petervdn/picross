@@ -16,3 +16,6 @@
 .boardItem.disabled {
     background-color: darkorange;
 }
+.boardItem.temporary {
+    background-color: dimgrey;
+}
