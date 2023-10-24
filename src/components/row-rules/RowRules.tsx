@@ -25,7 +25,7 @@ export function RowRules({ row }: Props) {
           {rule}
         </div>
       ))}
-      <div className={classNames(styles.rule, styles.options)}>{permutations.length}</div>
+      <div className={classNames(styles.rule, styles.options)}>{permutations?.length}</div>
     </div>
   );
 }

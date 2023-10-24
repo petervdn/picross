@@ -28,36 +28,37 @@ export function getConfigs({
   ruleIndex: number;
   length: number;
   start: number;
-}): Array<GroupPosition> {
+}): Array<GroupPosition> | undefined {
   const rule = rules[ruleIndex];
   if (rule === undefined) {
-    return [];
+    return undefined;
   }
 
-  const end = length - getSpaceForRules(rules.slice(ruleIndex + 1)) - 1;
-  const fullLength = end - start + 1;
+  const end = length - getSpaceForRules(rules.slice(ruleIndex + 1));
 
-  return Array.from({ length: fullLength - (rule - 1) }).map((_, index) => {
+  return Array.from({ length: end - start - rule + 1 }).map((_, index) => {
     const position = start + index;
-    const children = getConfigs({
-      ruleIndex: ruleIndex + 1,
-      rules,
-      length,
-      start: position + rule + 1,
-    });
+
     return {
       rule,
       ruleIndex,
       position,
-      children: children.length > 0 ? children : undefined,
+      children: getConfigs({
+        ruleIndex: ruleIndex + 1,
+        rules,
+        length,
+        start: position + rule + 1,
+      }),
     };
   });
 }
 
 export function getPositionsForRules({ rules, length }: { rules: Array<number>; length: number }) {
   const results = getConfigs({ rules, length, ruleIndex: 0, start: 0 });
-  const flattened = flattenResults(results);
-  return flattened.map((item) => createArrayFromResult(item, length));
+  if (results) {
+    const flattened = flattenResults(results);
+    return flattened.map((item) => createArrayFromResult(item, length));
+  }
 }
 
 function getNestedResults({
@@ -104,3 +105,5 @@ function createArrayFromResult(
 function getSpaceForRules(rules: Array<number>) {
   return rules.reduce((sum, rule) => rule + sum + 1, 0);
 }
+
+// export function filterPermutations(all: Array<0 | 1>);
