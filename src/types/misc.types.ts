@@ -19,13 +19,14 @@ export type Position = {
   y: number;
 };
 
-export type BoardItemState = 'filled' | 'crossed' | 'temporary';
+export const boardItemStates = ['filled', 'crossed', 'temporary'] as const;
+export type BoardItemState = (typeof boardItemStates)[number];
 
-export type BoardItem = {
-  position: Position;
-  state: BoardItemState;
-};
-
-export type GameState = {
-  items: Array<BoardItem>;
-};
+// export type BoardItem = {
+//   position: Position;
+//   state: BoardItemState;
+// };
+//
+// export type GameState = {
+//   items: Array<BoardItem>;
+// };

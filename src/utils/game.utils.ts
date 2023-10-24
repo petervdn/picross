@@ -35,8 +35,9 @@ export function getConfigs({
   }
 
   const end = length - getSpaceForRules(rules.slice(ruleIndex + 1));
+  const numberOfPositionsForRule = end - start - rule + 1;
 
-  return Array.from({ length: end - start - rule + 1 }).map((_, index) => {
+  return Array.from({ length: numberOfPositionsForRule }).map((_, index) => {
     const position = start + index;
 
     return {
@@ -55,6 +56,7 @@ export function getConfigs({
 
 export function getPositionsForRules({ rules, length }: { rules: Array<number>; length: number }) {
   const results = getConfigs({ rules, length, ruleIndex: 0, start: 0 });
+
   if (results) {
     const flattened = flattenResults(results);
     return flattened.map((item) => createArrayFromResult(item, length));

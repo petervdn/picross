@@ -35,7 +35,7 @@ export function ColumnRulesItem({ column }: Props) {
           {rule}
         </div>
       ))}
-      <div className={classNames(styles.item, styles.options)}>{permutations.length}</div>
+      <div className={classNames(styles.item, styles.options)}>{permutations?.length}</div>
     </div>
   );
 }

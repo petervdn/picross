@@ -10,7 +10,7 @@ export function GameBoard() {
   const { numberOfColumns, numberOfRows } = useGameStore();
 
   return (
-    <div className={styles.wrap}>
+    <>
       <ColumnRules />
       {Array.from({ length: numberOfRows }).map((_, row) => (
         <div key={row} className={styles.row}>
@@ -20,6 +20,6 @@ export function GameBoard() {
           ))}
         </div>
       ))}
-    </div>
+    </>
   );
 }
