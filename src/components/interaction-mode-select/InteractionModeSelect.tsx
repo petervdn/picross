@@ -1,6 +1,6 @@
 import { InteractionMode, useInteractionStore } from '@/store/interaction.store';
 import styles from './InteractionModeSelect.module.css';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { boardItemStates } from '@/types/misc.types';
 
 export function InteractionModeSelect() {
@@ -15,7 +15,30 @@ export function InteractionModeSelect() {
     [setInteractionMode],
   );
 
-  const options = boardItemStates.map((state) => ({ value: state, label: state }));
+  const options = useMemo(
+    () => boardItemStates.map((state) => ({ value: state, label: state })),
+    [],
+  );
+
+  useEffect(() => {
+    const keyUpHandler = function (event: KeyboardEvent) {
+      if (event.key !== 'd' && event.key !== 'a') {
+        return;
+      }
+
+      const currentOptionIndex = options.findIndex((option) => option.value === interactionMode);
+      const newIndex =
+        (currentOptionIndex + (event.key === 'd' ? 1 : -1 + options.length)) % options.length;
+      const newOption = options[newIndex]?.value;
+
+      if (newOption) {
+        setInteractionMode(newOption);
+      }
+    };
+    window.addEventListener('keyup', keyUpHandler);
+
+    return () => window.removeEventListener('keyup', keyUpHandler);
+  }, [interactionMode, options, setInteractionMode]);
 
   return (
     <div className={styles.wrap}>
