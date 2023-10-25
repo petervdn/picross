@@ -33,12 +33,12 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
 
   const state = useMemo(() => {
     if (permutations?.length === 0) {
-      return 'invalid';
+      return 'invalid' as const;
     }
     if (permutations?.length === 1) {
-      return 'solved';
+      return 'solved' as const;
     }
-    return 'not-solved';
+    return 'not-solved' as const;
   }, [permutations]);
 
   return { rules, permutations, gameBoardItems, state };

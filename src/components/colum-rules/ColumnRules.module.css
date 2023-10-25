@@ -16,4 +16,8 @@
             opacity: 0.3;
         }
     }
+
+    .invalid {
+        color: red;
+    }
 }

@@ -1,17 +1,16 @@
 import styles from '@/components/colum-rules/ColumnRules.module.css';
-import classNames from 'classnames';
-import { getPositionsForRules } from '@/utils/game.utils';
-import { useGameStore } from '@/store/game.store';
+import classNames from 'classnames/bind';
 import { useLayoutStore } from '@/store/layout.store';
-import { useMemo } from 'react';
 import { useRowOrColumn } from '@/utils/hooks/useRowOrColumn';
 
 type Props = {
   columnIndex: number;
 };
 
+let cx = classNames.bind(styles);
+
 export function ColumnRulesItem({ columnIndex }: Props) {
-  const { rules, permutations } = useRowOrColumn({
+  const { rules, permutations, state } = useRowOrColumn({
     index: columnIndex,
     type: 'column',
   });
@@ -24,7 +23,7 @@ export function ColumnRulesItem({ columnIndex }: Props) {
 
   return (
     <div
-      className={styles.column}
+      className={cx('column', { invalid: state === 'invalid' })}
       key={columnIndex}
       style={{ width: boardItemSize + 2 * boardItemMargin }}
     >
@@ -33,7 +32,7 @@ export function ColumnRulesItem({ columnIndex }: Props) {
           {rule}
         </div>
       ))}
-      <div className={classNames(styles.item, styles.options)}>{permutations?.length}</div>
+      <div className={cx('item', 'options')}>{permutations?.length}</div>
     </div>
   );
 }
