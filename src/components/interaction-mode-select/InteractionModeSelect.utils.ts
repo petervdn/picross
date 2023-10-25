@@ -3,7 +3,7 @@ import { BoardItemState } from '@/types/misc.types';
 export function getLabelForBoardItemState(mode: BoardItemState) {
   switch (mode) {
     case 'filled': {
-      return 'enable';
+      return 'fill';
     }
     case 'crossed': {
       return 'exclude';
