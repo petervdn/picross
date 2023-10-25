@@ -2,6 +2,7 @@ import { InteractionMode, useInteractionStore } from '@/store/interaction.store'
 import styles from './InteractionModeSelect.module.css';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { boardItemStates } from '@/types/misc.types';
+import { getLabelForBoardItemState } from '@/components/interaction-mode-select/InteractionModeSelect.utils';
 
 export function InteractionModeSelect() {
   const { interactionMode, setInteractionMode } = useInteractionStore(
@@ -16,7 +17,8 @@ export function InteractionModeSelect() {
   );
 
   const options = useMemo(
-    () => boardItemStates.map((state) => ({ value: state, label: state })),
+    () =>
+      boardItemStates.map((state) => ({ value: state, label: getLabelForBoardItemState(state) })),
     [],
   );
 
@@ -41,8 +43,10 @@ export function InteractionModeSelect() {
   }, [interactionMode, options, setInteractionMode]);
 
   return (
-    <div className={styles.wrap}>
-      <h2>Select mode</h2>
+    <div>
+      <h2>
+        Select mode <small className={styles.small}>(change with a & d keys)</small>
+      </h2>
       <div>
         {options.map(({ value, label }) => (
           <label htmlFor={value} key={value}>
