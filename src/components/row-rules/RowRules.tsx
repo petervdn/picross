@@ -3,14 +3,14 @@ import { useGameStore } from '@/store/game.store';
 import classNames from 'classnames';
 import { getPositionsForRules } from '@/utils/game.utils';
 import { useMemo } from 'react';
+import { useRowOrColumn } from '@/utils/hooks/useRowOrColumn';
 
 type Props = {
-  row: number;
+  rowIndex: number;
 };
 
-export function RowRules({ row }: Props) {
-  const gameStore = useGameStore();
-  const rules = useMemo(() => gameStore.rules.rows[row] ?? [], [gameStore.rules.rows, row]);
+export function RowRules({ rowIndex }: Props) {
+  const { rules } = useRowOrColumn({ index: rowIndex, type: 'row' });
   const numberOfRows = useGameStore(({ numberOfRows }) => numberOfRows);
 
   const permutations = useMemo(
@@ -20,7 +20,7 @@ export function RowRules({ row }: Props) {
 
   return (
     <div className={styles.rules}>
-      {rules.map((rule, index) => (
+      {rules?.map((rule, index) => (
         <div key={index} className={styles.rule}>
           {rule}
         </div>

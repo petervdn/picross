@@ -4,15 +4,16 @@ import { getPositionsForRules } from '@/utils/game.utils';
 import { useGameStore } from '@/store/game.store';
 import { useLayoutStore } from '@/store/layout.store';
 import { useMemo } from 'react';
+import { useRowOrColumn } from '@/utils/hooks/useRowOrColumn';
 
 type Props = {
-  column: number;
+  columnIndex: number;
 };
 
-export function ColumnRulesItem({ column }: Props) {
-  const rulesByColumn = useGameStore(({ rules }) => rules.columns);
+export function ColumnRulesItem({ columnIndex }: Props) {
+  const { rules } = useRowOrColumn({ index: columnIndex, type: 'column' });
   const numberOfColumns = useGameStore(({ numberOfColumns }) => numberOfColumns);
-  const rules = useMemo(() => rulesByColumn[column], [column, rulesByColumn]);
+
   const { boardItemSize, boardItemMargin } = useLayoutStore(
     ({ boardItemSize, boardItemMargin }) => ({
       boardItemSize,
@@ -27,7 +28,7 @@ export function ColumnRulesItem({ column }: Props) {
   return (
     <div
       className={styles.column}
-      key={column}
+      key={columnIndex}
       style={{ width: boardItemSize + 2 * boardItemMargin }}
     >
       {rules?.map((rule, index) => (

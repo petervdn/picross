@@ -8,7 +8,7 @@ export function ColumnRules() {
   return (
     <div className={styles.wrap}>
       {Array.from({ length: numberOfColumns }).map((_, index) => (
-        <ColumnRulesItem column={index} key={index} />
+        <ColumnRulesItem columnIndex={index} key={index} />
       ))}
     </div>
   );

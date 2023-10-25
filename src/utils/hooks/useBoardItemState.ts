@@ -1,6 +1,6 @@
 import { getItemKey, useGameStore } from '@/store/game.store';
-import { BoardPosition } from '@/types/misc.types';
 import { useMemo } from 'react';
+import { BoardPosition } from '@/types/misc.types';
 
 type Props = {
   boardPosition: BoardPosition;

@@ -1,16 +1,3 @@
-import { GameConfig } from '@/types/misc.types';
-
-export function getMaxAmountOfRules(gameConfig: GameConfig) {
-  return {
-    horizontal: gameConfig.rows.rules.reduce((acc, rules) => {
-      return Math.max(acc, rules.length);
-    }, 0),
-    vertical: gameConfig.columns.rules.reduce((acc, rules) => {
-      return Math.max(acc, rules.length);
-    }, 0),
-  };
-}
-
 type GroupPosition = {
   ruleIndex: number;
   rule: number;
@@ -107,5 +94,3 @@ function createArrayFromResult(
 function getSpaceForRules(rules: Array<number>) {
   return rules.reduce((sum, rule) => rule + sum + 1, 0);
 }
-
-// export function filterPermutations(all: Array<0 | 1>);

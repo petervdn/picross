@@ -1,32 +1,21 @@
-export type GameConfig = {
-  rows: BoardGroupConfig;
-  columns: BoardGroupConfig;
-  groupRules?: Array<number>;
-};
-
-type BoardGroupConfig = {
-  amount: number;
-  rules: Array<Array<number>>;
-};
-
 export type BoardPosition = {
   row: number;
   column: number;
 };
 
-export type Position = {
-  x: number;
-  y: number;
-};
-
 export const boardItemStates = ['filled', 'crossed', 'temporary'] as const;
 export type BoardItemState = (typeof boardItemStates)[number];
 
-// export type BoardItem = {
-//   position: Position;
-//   state: BoardItemState;
-// };
-//
-// export type GameState = {
-//   items: Array<BoardItem>;
-// };
+export type RowOrColumn = 'row' | 'column';
+
+export type RowOrColumnRules = Array<number>;
+export type GameState = {
+  numberOfRows: number;
+  numberOfColumns: number;
+  rules: {
+    rows: Array<RowOrColumnRules>;
+    columns: Array<RowOrColumnRules>;
+  };
+  itemStates: Record<BoardPositionKey, BoardItemState | undefined>;
+};
+export type BoardPositionKey = `${number}x${number}`;

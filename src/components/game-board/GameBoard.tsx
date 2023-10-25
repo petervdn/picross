@@ -14,7 +14,7 @@ export function GameBoard() {
       <ColumnRules />
       {Array.from({ length: numberOfRows }).map((_, row) => (
         <div key={row} className={styles.row}>
-          <RowRules row={row} />
+          <RowRules rowIndex={row} />
           {Array.from({ length: numberOfColumns }).map((_, column) => (
             <GameBoardItem key={column} row={row} column={column} />
           ))}
