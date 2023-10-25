@@ -29,9 +29,8 @@ export function InteractionModeSelect() {
       }
 
       const currentOptionIndex = options.findIndex((option) => option.value === interactionMode);
-      const newIndex =
-        (currentOptionIndex + (event.key === 'd' ? 1 : -1 + options.length)) % options.length;
-      const newOption = options[newIndex]?.value;
+      const newIndex = currentOptionIndex + (event.key === 'd' ? 1 : -1);
+      const newOption = options[Math.min(Math.max(newIndex, 0), options.length)]?.value;
 
       if (newOption) {
         setInteractionMode(newOption);
