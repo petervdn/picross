@@ -10,13 +10,7 @@ type Props = {
 };
 
 export function RowRules({ rowIndex }: Props) {
-  const { rules } = useRowOrColumn({ index: rowIndex, type: 'row' });
-  const numberOfRows = useGameStore(({ numberOfRows }) => numberOfRows);
-
-  const permutations = useMemo(
-    () => getPositionsForRules({ rules: rules ?? [], length: numberOfRows }),
-    [numberOfRows, rules],
-  );
+  const { rules, permutations } = useRowOrColumn({ index: rowIndex, type: 'row' });
 
   return (
     <div className={styles.rules}>

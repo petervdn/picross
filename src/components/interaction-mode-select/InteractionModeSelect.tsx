@@ -16,7 +16,7 @@ export function InteractionModeSelect() {
   );
 
   const options = boardItemStates.map((state) => ({ value: state, label: state }));
-  console.log(interactionMode);
+
   return (
     <div className={styles.wrap}>
       <h2>Select mode</h2>

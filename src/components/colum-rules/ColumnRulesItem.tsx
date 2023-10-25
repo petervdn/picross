@@ -11,8 +11,8 @@ type Props = {
 };
 
 export function ColumnRulesItem({ columnIndex }: Props) {
-  const { rules } = useRowOrColumn({ index: columnIndex, type: 'column' });
-  const numberOfColumns = useGameStore(({ numberOfColumns }) => numberOfColumns);
+  const { rules, permutations } = useRowOrColumn({ index: columnIndex, type: 'column' });
+  // const numberOfColumns = useGameStore(({ numberOfColumns }) => numberOfColumns);
 
   const { boardItemSize, boardItemMargin } = useLayoutStore(
     ({ boardItemSize, boardItemMargin }) => ({
@@ -20,10 +20,10 @@ export function ColumnRulesItem({ columnIndex }: Props) {
       boardItemMargin,
     }),
   );
-  const permutations = useMemo(
-    () => getPositionsForRules({ rules: rules ?? [], length: numberOfColumns }),
-    [numberOfColumns, rules],
-  );
+  // const permutations = useMemo(
+  //   () => getPositionsForRules({ rules: rules ?? [], length: numberOfColumns }),
+  //   [numberOfColumns, rules],
+  // );
 
   return (
     <div
