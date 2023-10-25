@@ -11,19 +11,16 @@ type Props = {
 };
 
 export function ColumnRulesItem({ columnIndex }: Props) {
-  const { rules, permutations } = useRowOrColumn({ index: columnIndex, type: 'column' });
-  // const numberOfColumns = useGameStore(({ numberOfColumns }) => numberOfColumns);
-
+  const { rules, permutations } = useRowOrColumn({
+    index: columnIndex,
+    type: 'column',
+  });
   const { boardItemSize, boardItemMargin } = useLayoutStore(
     ({ boardItemSize, boardItemMargin }) => ({
       boardItemSize,
       boardItemMargin,
     }),
   );
-  // const permutations = useMemo(
-  //   () => getPositionsForRules({ rules: rules ?? [], length: numberOfColumns }),
-  //   [numberOfColumns, rules],
-  // );
 
   return (
     <div

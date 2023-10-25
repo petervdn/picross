@@ -1,20 +1,20 @@
 import { RowOrColumn } from '@/types/misc.types';
 import { useGameStore } from '@/store/game.store';
 import { useMemo } from 'react';
-import { getPositionsForRules } from '@/utils/game.utils';
+import { filterPermutations, getPositionsForRules, getRowOrColumn } from '@/utils/game.utils';
 
 export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: number }) {
-  const allRules = useGameStore(({ rules }) => rules);
+  const gameState = useGameStore();
   const { numberOfColumns, numberOfRows } = useGameStore(({ numberOfColumns, numberOfRows }) => ({
     numberOfColumns,
     numberOfRows,
   }));
 
   const rules = useMemo(() => {
-    return type === 'column' ? allRules.columns[index] : allRules.rows[index];
-  }, [allRules.columns, allRules.rows, index, type]);
+    return type === 'column' ? gameState.rules.columns[index] : gameState.rules.rows[index];
+  }, [gameState.rules.columns, gameState.rules.rows, index, type]);
 
-  const permutations = useMemo(
+  const allPermutations = useMemo(
     () =>
       getPositionsForRules({
         rules: rules ?? [],
@@ -23,5 +23,23 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
     [numberOfColumns, numberOfRows, rules, type],
   );
 
-  return { rules, permutations };
+  const gameBoardItems = useMemo(() => {
+    return getRowOrColumn({ gameState, type, index });
+  }, [gameState, index, type]);
+
+  const permutations = useMemo(() => {
+    return filterPermutations(allPermutations ?? [], gameBoardItems.items);
+  }, [allPermutations, gameBoardItems.items]);
+
+  const state = useMemo(() => {
+    if (permutations?.length === 0) {
+      return 'invalid';
+    }
+    if (permutations?.length === 1) {
+      return 'solved';
+    }
+    return 'not-solved';
+  }, [permutations]);
+
+  return { rules, permutations, gameBoardItems, state };
 }

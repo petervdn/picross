@@ -1,12 +1,11 @@
 import { useGameStore } from '@/store/game.store';
+import { getRowOrColumn } from '@/utils/game.utils';
 
 export function solve() {
-  const { numberOfColumns, numberOfRows, getGroup } = useGameStore.getState();
+  const gameState = useGameStore.getState();
 
-  for (let columnIndex = 0; columnIndex < numberOfColumns; columnIndex++) {
-    const column = getGroup('column', columnIndex);
-    console.log(columnIndex, column);
+  for (let index = 0; index < gameState.numberOfColumns; index++) {
+    const column = getRowOrColumn({ gameState, type: 'column', index });
+    console.log(index, column);
   }
 }
-
-//function findCommonItemsInPermutations()

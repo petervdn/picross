@@ -12,13 +12,9 @@ type GameStore = GameState & {
     boardPosition: BoardPosition;
     itemState: BoardItemState | undefined;
   }) => void;
-  getGroup: (
-    type: RowOrColumn,
-    index: number,
-  ) => { items: Array<BoardItemState | undefined>; rules: Array<number> };
 };
 
-export const useGameStore = create<GameStore>((set, get) => ({
+export const useGameStore = create<GameStore>((set) => ({
   numberOfColumns: 10,
   numberOfRows: 10,
   rules: {
@@ -48,25 +44,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     ],
   },
   itemStates: {},
-  getGroup: (type, groupIndex) => {
-    const { numberOfRows, itemStates, numberOfColumns, rules } = get();
-    const rulesForGroup =
-      (type === 'column' ? rules.columns[groupIndex] : rules.rows[groupIndex]) ?? [];
-    const numberOfItems = type === 'column' ? numberOfRows : numberOfColumns;
-
-    const items = Array.from({ length: numberOfItems }).map(
-      (_, index) =>
-        itemStates[
-          getItemKey(
-            type === 'column'
-              ? { row: index, column: groupIndex }
-              : { row: groupIndex, column: index },
-          )
-        ],
-    );
-
-    return { items, rules: rulesForGroup };
-  },
   setItemState: ({ itemState, boardPosition }) =>
     set((state) => ({
       itemStates: { ...state.itemStates, [getItemKey(boardPosition)]: itemState },
@@ -74,5 +51,5 @@ export const useGameStore = create<GameStore>((set, get) => ({
 }));
 
 export function getItemKey({ row, column }: BoardPosition): BoardPositionKey {
-  return `${row}x${column}`;
+  return `${column}x${row}`;
 }

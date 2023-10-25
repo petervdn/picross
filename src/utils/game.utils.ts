@@ -1,3 +1,6 @@
+import { getItemKey } from '@/store/game.store';
+import { BoardItemState, GameState, RowOrColumn } from '@/types/misc.types';
+
 type GroupPosition = {
   ruleIndex: number;
   rule: number;
@@ -41,7 +44,13 @@ export function getConfigs({
   });
 }
 
-export function getPositionsForRules({ rules, length }: { rules: Array<number>; length: number }) {
+export function getPositionsForRules({
+  rules,
+  length,
+}: {
+  rules: Array<number>;
+  length: number;
+}): Permutations | undefined {
   const results = getConfigs({ rules, length, ruleIndex: 0, start: 0 });
 
   if (results) {
@@ -93,4 +102,51 @@ function createArrayFromResult(
 
 function getSpaceForRules(rules: Array<number>) {
   return rules.reduce((sum, rule) => rule + sum + 1, 0);
+}
+
+/**
+ * Returns an array with states for one ror or column.
+ */
+export function getRowOrColumn({
+  gameState: { numberOfRows, itemStates, numberOfColumns, rules },
+  index,
+  type,
+}: {
+  type: RowOrColumn;
+  index: number;
+  gameState: GameState;
+}) {
+  const rulesForGroup = (type === 'column' ? rules.columns[index] : rules.rows[index]) ?? [];
+  const numberOfItems = type === 'column' ? numberOfRows : numberOfColumns;
+
+  const items = Array.from({ length: numberOfItems }).map(
+    (_, mapIndex) =>
+      itemStates[
+        getItemKey(
+          type === 'column' ? { row: mapIndex, column: index } : { row: index, column: mapIndex },
+        )
+      ],
+  );
+
+  return { items, rules: rulesForGroup };
+}
+
+type Permutations = Array<Array<0 | 1>>;
+
+export function filterPermutations(
+  permutations: Permutations,
+  rowOrColumnItems: Array<BoardItemState | undefined>,
+) {
+  return permutations.filter((permutation) => {
+    for (const [index, rowOrColumnItem] of rowOrColumnItems.entries()) {
+      if (rowOrColumnItem === 'filled' && permutation[index] === 0) {
+        return false;
+      }
+      if (rowOrColumnItem === 'crossed' && permutation[index] === 1) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 }
