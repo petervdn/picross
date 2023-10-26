@@ -7,15 +7,21 @@ import { ColumnRules } from '@/components/colum-rules/ColumnRules';
 import { useGameStore } from '@/store/game.store';
 
 export function GameBoard() {
-  const { numberOfColumns, numberOfRows } = useGameStore();
+  const { gameDefinition } = useGameStore(({ gameDefinition }) => ({
+    gameDefinition,
+  }));
+
+  if (!gameDefinition) {
+    return null;
+  }
 
   return (
     <>
       <ColumnRules />
-      {Array.from({ length: numberOfRows }).map((_, row) => (
+      {Array.from({ length: gameDefinition.numberOfRows }).map((_, row) => (
         <div key={row} className={styles.row}>
           <RowRules rowIndex={row} />
-          {Array.from({ length: numberOfColumns }).map((_, column) => (
+          {Array.from({ length: gameDefinition.numberOfColumns }).map((_, column) => (
             <GameBoardItem key={column} row={row} column={column} />
           ))}
         </div>

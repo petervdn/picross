@@ -7,8 +7,8 @@ type Props = {
 };
 
 export function useBoardItemState({ boardPosition }: Props) {
-  const itemStates = useGameStore((state) => state.itemStates);
+  const boardState = useGameStore(({ boardState }) => boardState);
   const itemKey = useMemo(() => getItemKey(boardPosition), [boardPosition]);
 
-  return useMemo(() => itemStates[itemKey], [itemKey, itemStates]);
+  return useMemo(() => boardState[itemKey], [itemKey, boardState]);
 }

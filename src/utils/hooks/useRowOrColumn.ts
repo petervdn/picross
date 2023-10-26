@@ -2,30 +2,34 @@ import { RowOrColumn } from '@/types/misc.types';
 import { useGameStore } from '@/store/game.store';
 import { useMemo } from 'react';
 import { filterPermutations, getPositionsForRules, getRowOrColumn } from '@/utils/game.utils';
+import { useGameDefinition } from '@/utils/hooks/useGameDefinition';
 
 export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: number }) {
-  const gameState = useGameStore();
-  const { numberOfColumns, numberOfRows } = useGameStore(({ numberOfColumns, numberOfRows }) => ({
-    numberOfColumns,
-    numberOfRows,
+  const { boardState } = useGameStore(({ gameDefinition, boardState }) => ({
+    gameDefinition,
+    boardState,
   }));
 
+  const gameDefinition = useGameDefinition();
+
   const rules = useMemo(() => {
-    return type === 'column' ? gameState.rules.columns[index] : gameState.rules.rows[index];
-  }, [gameState.rules.columns, gameState.rules.rows, index, type]);
+    return type === 'column'
+      ? gameDefinition.rules.columns[index]
+      : gameDefinition.rules.rows[index];
+  }, [index, gameDefinition.rules.columns, gameDefinition.rules.rows, type]);
 
   const allPermutations = useMemo(
     () =>
       getPositionsForRules({
         rules: rules ?? [],
-        length: type === 'column' ? numberOfColumns : numberOfRows,
+        length: type === 'column' ? gameDefinition.numberOfColumns : gameDefinition.numberOfRows,
       }),
-    [numberOfColumns, numberOfRows, rules, type],
+    [gameDefinition.numberOfColumns, gameDefinition.numberOfRows, rules, type],
   );
 
   const gameBoardItems = useMemo(() => {
-    return getRowOrColumn({ gameState, type, index });
-  }, [gameState, index, type]);
+    return getRowOrColumn({ boardState, type, index, gameDefinition });
+  }, [boardState, gameDefinition, index, type]);
 
   const permutations = useMemo(() => {
     return filterPermutations(allPermutations ?? [], gameBoardItems.items);
@@ -41,5 +45,5 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
     return 'not-solved' as const;
   }, [permutations]);
 
-  return { rules, permutations, gameBoardItems, state };
+  return { rules: rules, permutations, gameBoardItems, state };
 }

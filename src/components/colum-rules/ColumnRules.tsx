@@ -1,9 +1,9 @@
 import styles from './ColumnRules.module.css';
-import { useGameStore } from '@/store/game.store';
 import { ColumnRulesItem } from '@/components/colum-rules/ColumnRulesItem';
+import { useGameDefinition } from '@/utils/hooks/useGameDefinition';
 
 export function ColumnRules() {
-  const numberOfColumns = useGameStore(({ numberOfColumns }) => numberOfColumns);
+  const { numberOfColumns } = useGameDefinition();
 
   return (
     <div className={styles.wrap}>

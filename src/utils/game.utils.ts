@@ -1,5 +1,5 @@
 import { getItemKey } from '@/store/game.store';
-import { BoardItemState, GameState, RowOrColumn } from '@/types/misc.types';
+import { BoardItemState, BoardState, GameDefinition, RowOrColumn } from '@/types/misc.types';
 
 type GroupPosition = {
   ruleIndex: number;
@@ -108,20 +108,22 @@ function getSpaceForRules(rules: Array<number>) {
  * Returns an array with states for one ror or column.
  */
 export function getRowOrColumn({
-  gameState: { numberOfRows, itemStates, numberOfColumns, rules },
+  gameDefinition: { numberOfRows, numberOfColumns, rules },
   index,
   type,
+  boardState,
 }: {
   type: RowOrColumn;
   index: number;
-  gameState: GameState;
+  gameDefinition: GameDefinition;
+  boardState: BoardState;
 }) {
   const rulesForGroup = (type === 'column' ? rules.columns[index] : rules.rows[index]) ?? [];
   const numberOfItems = type === 'column' ? numberOfRows : numberOfColumns;
 
   const items = Array.from({ length: numberOfItems }).map(
     (_, mapIndex) =>
-      itemStates[
+      boardState[
         getItemKey(
           type === 'column' ? { row: mapIndex, column: index } : { row: index, column: mapIndex },
         )
