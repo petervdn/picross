@@ -1,5 +1,9 @@
 :root {
   background-color: darkslategrey;
   color: white;
+
+  a {
+    color: white
+  }
 }
 

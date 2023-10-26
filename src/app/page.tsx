@@ -7,11 +7,15 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <>
-      {gameDefinitions.map(({ id }) => (
-        <Link key={id} href={`/play/${id}`} style={{ color: 'white' }}>
-          {id}
-        </Link>
-      ))}
+      <ul>
+        {gameDefinitions.map(({ id }) => (
+          <li key={id}>
+            <Link href={`/play/${id}`} style={{ color: 'white' }}>
+              {id}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

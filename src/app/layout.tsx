@@ -16,7 +16,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={inter.className}>
         <div className={styles.wrap}>
-          <h1 style={{ marginLeft: 200 }}>Picross</h1>
+          <h1 style={{ marginLeft: 200 }}>
+            <a href="/" style={{ color: 'white', textDecoration: 'none' }}>
+              Picross
+            </a>
+          </h1>
           {children}
         </div>
       </body>
