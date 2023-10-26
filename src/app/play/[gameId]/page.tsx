@@ -1,26 +1,21 @@
 'use client';
 
 import { GameBoard } from '@/components/game-board/GameBoard';
-import styles from '@/app/page.module.css';
+import styles from './page.module.css';
 import { InteractionModeSelect } from '@/components/interaction-mode-select/InteractionModeSelect';
 import React, { useEffect } from 'react';
-import { notFound, useRouter } from 'next/navigation';
-import { NextPageParams } from '@/types/page';
+import { notFound } from 'next/navigation';
 import { gameDefinitions } from '@/data/gameDefinitions';
-import { GameComponent } from '@/components/GameComponent';
 import { useGameStore } from '@/store/game.store';
 
 export default function Page({ params }: { params: { gameId: string } }) {
-  // const router = useRouter();
   console.log('on server', params);
   const game = gameDefinitions.find(({ id }) => id === params.gameId);
 
-  const { setGameDefinition, gameDefinition } = useGameStore(
-    ({ setGameDefinition, gameDefinition }) => ({
-      setGameDefinition,
-      gameDefinition,
-    }),
-  );
+  const { setGameDefinition } = useGameStore(({ setGameDefinition, gameDefinition }) => ({
+    setGameDefinition,
+    gameDefinition,
+  }));
 
   useEffect(() => {
     setGameDefinition(game);
@@ -32,7 +27,9 @@ export default function Page({ params }: { params: { gameId: string } }) {
 
   return (
     <>
-      <h1>Play {game.id}</h1>
+      <div className={styles.container}>
+        <h2>{game.id}</h2>
+      </div>
       <GameBoard />
       <div className={styles.container}>
         <InteractionModeSelect />
