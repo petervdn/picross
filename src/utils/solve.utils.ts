@@ -79,7 +79,7 @@ export function findGuaranteedBoardItemStatesForRowOrColumn({
 
   const permutations = getAllPermutationsForRules({
     rules: rowOrColumn.rules,
-    length: type === 'column' ? gameDefinition.numberOfColumns : gameDefinition.numberOfRows,
+    length: type === 'column' ? gameDefinition.numberOfRows : gameDefinition.numberOfColumns,
   });
 
   const filteredPermutations = filterPermutations(permutations, rowOrColumn.items);
