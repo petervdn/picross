@@ -5,6 +5,7 @@ import {
   findGuaranteedBoardItemStatesForRowsOrColumns,
 } from '@/utils/solve.utils';
 import { useGameStore } from '@/store/game.store';
+import { useUiStore } from '@/store/ui.store';
 
 export function Actions() {
   const { boardState, setBoardState, gameDefinition } = useGameStore(
@@ -14,6 +15,13 @@ export function Actions() {
       setBoardState,
     }),
   );
+  const { showPermutations, setShowPermutations } = useUiStore(
+    ({ showPermutations, setShowPermutations }) => ({
+      showPermutations,
+      setShowPermutations,
+    }),
+  );
+
   const onTestClick = (type: RowOrColumn) => {
     if (gameDefinition) {
       const guaranteedStates = findGuaranteedBoardItemStatesForRowsOrColumns({
@@ -29,6 +37,9 @@ export function Actions() {
   const onClearBoardClick = () => {
     setBoardState({});
   };
+  const onPermutationsClick = () => {
+    setShowPermutations(!showPermutations);
+  };
 
   return (
     <>
@@ -36,7 +47,7 @@ export function Actions() {
       <button type="button" onClick={onClearBoardClick}>
         Clear
       </button>
-      <button type="button" onClick={onClearBoardClick}>
+      <button type="button" onClick={onPermutationsClick}>
         Permutations
       </button>
       <button type="button" onClick={() => onTestClick('row')}>
