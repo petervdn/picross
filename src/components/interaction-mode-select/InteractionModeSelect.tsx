@@ -43,7 +43,7 @@ export function InteractionModeSelect() {
   return (
     <div>
       <h2>
-        Select mode <small className={styles.small}>(change with a & d keys)</small>
+        Select mode <small className={styles.small}>(change with a s d keys)</small>
       </h2>
       <div>
         {options.map(({ value, label }) => (
