@@ -12,18 +12,14 @@ import {
   findGuaranteedBoardItemStatesForRowsOrColumns,
 } from '@/utils/solve.utils';
 import { RowOrColumn } from '@/types/misc.types';
+import { Actions } from '@/components/actions/Actions';
 
 export default function Page({ params }: { params: { gameId: string } }) {
   const game = gameDefinitions.find(({ id }) => id === params.gameId);
 
-  const { setGameDefinition, boardState, setBoardState } = useGameStore(
-    ({ setGameDefinition, gameDefinition, boardState, setBoardState }) => ({
-      setGameDefinition,
-      gameDefinition,
-      boardState,
-      setBoardState,
-    }),
-  );
+  const { setGameDefinition } = useGameStore(({ setGameDefinition }) => ({
+    setGameDefinition,
+  }));
 
   useEffect(() => {
     setGameDefinition(game);
@@ -33,31 +29,13 @@ export default function Page({ params }: { params: { gameId: string } }) {
     notFound();
   }
 
-  const onTestClick = (type: RowOrColumn) => {
-    if (game) {
-      const guaranteedStates = findGuaranteedBoardItemStatesForRowsOrColumns({
-        type,
-        boardState,
-        gameDefinition: game,
-      });
-
-      setBoardState(applyGuaranteedStates({ guaranteedStates, boardState, type }));
-    }
-  };
-
   return (
     <>
       <div className={styles.container}></div>
       <GameBoard />
       <div className={styles.container}>
         <InteractionModeSelect />
-        <h2>Actions</h2>
-        <button type={'button'} onClick={() => onTestClick('row')}>
-          Find overlaps for rows
-        </button>
-        <button type={'button'} onClick={() => onTestClick('column')}>
-          Find overlaps for columns
-        </button>
+        <Actions />
       </div>
     </>
   );
