@@ -1,8 +1,14 @@
 import { InteractionMode, useInteractionStore } from '@/store/interaction.store';
 import styles from './InteractionModeSelect.module.css';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { boardItemStates } from '@/types/misc.types';
+import { BoardItemState, boardItemStates } from '@/types/misc.types';
 import { getLabelForBoardItemState } from '@/components/interaction-mode-select/InteractionModeSelect.utils';
+
+const keyMap: Record<string, BoardItemState | undefined> = {
+  a: 'filled',
+  s: 'crossed',
+  d: 'temporary',
+};
 
 export function InteractionModeSelect() {
   const { interactionMode, setInteractionMode } = useInteractionStore(
@@ -24,16 +30,9 @@ export function InteractionModeSelect() {
 
   useEffect(() => {
     const keyUpHandler = function (event: KeyboardEvent) {
-      if (event.key !== 'd' && event.key !== 'a') {
-        return;
-      }
-
-      const currentOptionIndex = options.findIndex((option) => option.value === interactionMode);
-      const newIndex = currentOptionIndex + (event.key === 'd' ? 1 : -1);
-      const newOption = options[Math.min(Math.max(newIndex, 0), options.length)]?.value;
-
-      if (newOption) {
-        setInteractionMode(newOption);
+      const stateForKey = keyMap[event.key];
+      if (stateForKey) {
+        setInteractionMode(stateForKey);
       }
     };
     window.addEventListener('keyup', keyUpHandler);
