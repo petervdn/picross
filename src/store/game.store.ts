@@ -15,7 +15,7 @@ type GameStore = {
   gameDefinition: GameDefinition | undefined;
   boardState: BoardState;
   setBoardState: (boardState: BoardState) => void;
-  setGameDefinition: (gameDefinition: GameDefinition | undefined) => void;
+  setGameDefinition: (gameDefinition: GameDefinition | undefined) => void; // todo: validate game (number of rules)
 };
 
 export const useGameStore = create<GameStore>((set) => ({

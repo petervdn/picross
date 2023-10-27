@@ -6,6 +6,8 @@ type LayoutStore = {
   boardItemMargin: number;
 };
 
+// todo: move to css variables
+
 export const useLayoutStore = create<LayoutStore>((set) => ({
   horizontalRulesWidth: 200,
   boardItemSize: 40,
