@@ -27,6 +27,7 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
     [gameDefinition.numberOfColumns, gameDefinition.numberOfRows, rules, type],
   );
 
+  // todo: rename (not only items in there)
   const gameBoardItems = useMemo(() => {
     return getRowOrColumn({ boardState, type, index, gameDefinition });
   }, [boardState, gameDefinition, index, type]);
@@ -40,10 +41,20 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
       return 'invalid' as const;
     }
     if (permutations?.length === 1) {
-      return 'solved' as const;
+      const filledBoardItems = gameBoardItems.items.reduce(
+        (sum, item) => sum + (item === 'filled' ? 1 : 0),
+        0,
+      );
+      const necessaryFilledItems = (permutations[0] ?? []).reduce<number>(
+        (sum, item) => sum + item,
+        0,
+      );
+      if (filledBoardItems === necessaryFilledItems) {
+        return 'solved' as const;
+      }
     }
     return 'not-solved' as const;
-  }, [permutations]);
+  }, [gameBoardItems.items, permutations]);
 
   return { rules: rules, permutations, gameBoardItems, state };
 }

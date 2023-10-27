@@ -1,13 +1,13 @@
 import styles from '@/components/colum-rules/ColumnRules.module.css';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useLayoutStore } from '@/store/layout.store';
 import { useRowOrColumn } from '@/utils/hooks/useRowOrColumn';
+import { Rule } from '@/components/rule/Rule';
+import { useUiStore } from '@/store/ui.store';
 
 type Props = {
   columnIndex: number;
 };
-
-let cx = classNames.bind(styles);
 
 export function ColumnRulesItem({ columnIndex }: Props) {
   const { rules, permutations, state } = useRowOrColumn({
@@ -21,18 +21,22 @@ export function ColumnRulesItem({ columnIndex }: Props) {
     }),
   );
 
+  const { showPermutations } = useUiStore(({ showPermutations }) => ({ showPermutations }));
+
   return (
     <div
-      className={cx('column', { invalid: state === 'invalid' })}
+      className={styles.column}
       key={columnIndex}
       style={{ width: boardItemSize + 2 * boardItemMargin }}
     >
       {rules?.map((rule, index) => (
         <div key={index} className={styles.item}>
-          {rule}
+          <Rule rule={rule} state={state} />
         </div>
       ))}
-      <div className={cx('item', 'options')}>{permutations?.length}</div>
+      {showPermutations && (
+        <div className={classNames(styles.item, styles.options)}>{permutations?.length}</div>
+      )}
     </div>
   );
 }

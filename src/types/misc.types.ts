@@ -22,3 +22,5 @@ export type GameDefinition = {
 
 export type BoardState = Record<BoardPositionKey, BoardItemState | undefined>;
 export type BoardPositionKey = `${number}x${number}`;
+
+export type RuleState = 'solved' | 'not-solved' | 'invalid';

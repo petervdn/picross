@@ -1,24 +1,27 @@
 import styles from './RowRules.module.css';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import { useRowOrColumn } from '@/utils/hooks/useRowOrColumn';
+import { Rule } from '@/components/rule/Rule';
+import { useUiStore } from '@/store/ui.store';
 
 type Props = {
   rowIndex: number;
 };
 
-let cx = classNames.bind(styles);
-
 export function RowRules({ rowIndex }: Props) {
   const { rules, permutations, state } = useRowOrColumn({ index: rowIndex, type: 'row' });
+  const { showPermutations } = useUiStore(({ showPermutations }) => ({ showPermutations }));
 
   return (
-    <div className={cx('rules', { invalid: state === 'invalid' })}>
+    <div className={styles.rules}>
       {rules?.map((rule, index) => (
         <div key={index} className={styles.rule}>
-          {rule}
+          <Rule rule={rule} state={state} />
         </div>
       ))}
-      <div className={cx('rule', 'options')}>{permutations?.length}</div>
+      {showPermutations && (
+        <div className={classNames(styles.rule, styles.options)}>{permutations?.length}</div>
+      )}
     </div>
   );
 }
