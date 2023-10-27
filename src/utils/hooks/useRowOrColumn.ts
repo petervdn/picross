@@ -1,7 +1,7 @@
 import { RowOrColumn } from '@/types/misc.types';
 import { useGameStore } from '@/store/game.store';
 import { useMemo } from 'react';
-import { filterPermutations, getPositionsForRules, getRowOrColumn } from '@/utils/game.utils';
+import { filterPermutations, getAllPermutationsForRules, getRowOrColumn } from '@/utils/game.utils';
 import { useGameDefinition } from '@/utils/hooks/useGameDefinition';
 
 export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: number }) {
@@ -20,7 +20,7 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
 
   const allPermutations = useMemo(
     () =>
-      getPositionsForRules({
+      getAllPermutationsForRules({
         rules: rules ?? [],
         length: type === 'column' ? gameDefinition.numberOfColumns : gameDefinition.numberOfRows,
       }),

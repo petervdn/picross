@@ -1,6 +1,7 @@
 import { getItemKey } from '@/store/game.store';
 import { BoardItemState, BoardState, GameDefinition, RowOrColumn } from '@/types/misc.types';
 
+// todo: better name
 type GroupPosition = {
   ruleIndex: number;
   rule: number;
@@ -8,7 +9,8 @@ type GroupPosition = {
   children?: Array<GroupPosition>;
 };
 
-export function getConfigs({
+// todo: better name
+function getConfigs({
   rules,
   ruleIndex,
   length,
@@ -44,21 +46,30 @@ export function getConfigs({
   });
 }
 
-export function getPositionsForRules({
+/**
+ *
+ * @param rules
+ * @param length
+ */
+// todo check where this is used and deal with removal of undefined as return value
+export function getAllPermutationsForRules({
   rules,
   length,
 }: {
   rules: Array<number>;
   length: number;
-}): Permutations | undefined {
+}): Permutations {
   const results = getConfigs({ rules, length, ruleIndex: 0, start: 0 });
 
-  if (results) {
-    const flattened = flattenResults(results);
-    return flattened.map((item) => createArrayFromResult(item, length));
+  if (!results) {
+    return [];
   }
+
+  const flattened = flattenResults(results);
+  return flattened.map((item) => createPermutationFromResult(item, length));
 }
 
+// todo: better name
 function getNestedResults({
   result: { rule, position, children },
   parents,
@@ -78,6 +89,7 @@ function getNestedResults({
   }
 }
 
+// todo: better name
 function flattenResults(results: Array<GroupPosition>) {
   const allResults: Array<Array<{ rule: number; position: number }>> = [];
   for (const result of results) {
@@ -87,10 +99,15 @@ function flattenResults(results: Array<GroupPosition>) {
   return allResults;
 }
 
-function createArrayFromResult(
-  positions: Array<{ rule: number; position: number }>,
+/**
+ * todo: better name
+ * @param positions
+ * @param length
+ */
+function createPermutationFromResult(
+  positions: Array<{ rule: number; position: number }>, // todo: type with good name
   length: number,
-): Array<0 | 1> {
+): Permutation {
   const array: Array<0 | 1> = Array.from<0 | 1>({ length }).fill(0);
 
   for (const { position, rule } of positions) {
@@ -100,12 +117,17 @@ function createArrayFromResult(
   return array;
 }
 
+/**
+ * Calculates how much room (in board items) a set of rules needs.
+ * @param rules
+ */
 function getSpaceForRules(rules: Array<number>) {
   return rules.reduce((sum, rule) => rule + sum + 1, 0);
 }
 
 /**
- * Returns an array with states for one ror or column.
+ * Returns the board item states plus the rules for a given
+ * row or column.
  */
 export function getRowOrColumn({
   gameDefinition: { numberOfRows, numberOfColumns, rules },
@@ -133,8 +155,18 @@ export function getRowOrColumn({
   return { items, rules: rulesForGroup };
 }
 
-type Permutations = Array<Array<0 | 1>>;
+type Permutation = Array<0 | 1>; // todo: rename -> Solution?
+type Permutations = Array<Permutation>;
 
+/**
+ * Given a list of permutations for a row/column and a list of
+ * board item states (for that same row/colum), this function
+ * filters out the permutations that are no longer possible.
+ *
+ * @param permutations
+ * @param rowOrColumnItems
+ */
+// todo: make params an object
 export function filterPermutations(
   permutations: Permutations,
   rowOrColumnItems: Array<BoardItemState | undefined>,

@@ -14,6 +14,7 @@ type GameStore = {
   }) => void;
   gameDefinition: GameDefinition | undefined;
   boardState: BoardState;
+  setBoardState: (boardState: BoardState) => void;
   setGameDefinition: (gameDefinition: GameDefinition | undefined) => void;
 };
 
@@ -27,8 +28,12 @@ export const useGameStore = create<GameStore>((set) => ({
   setGameDefinition: (gameDefinition) => {
     set(() => ({ gameDefinition, boardState: {} }));
   },
+  setBoardState: (boardState) => {
+    set(() => ({ boardState }));
+  },
 }));
 
+// todo: clearer name + move
 export function getItemKey({ row, column }: BoardPosition): BoardPositionKey {
   return `${column}x${row}`;
 }
