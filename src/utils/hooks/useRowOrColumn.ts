@@ -22,7 +22,7 @@ export function useRowOrColumn({ index, type }: { type: RowOrColumn; index: numb
     () =>
       getAllPermutationsForRules({
         rules: rules ?? [],
-        length: type === 'column' ? gameDefinition.numberOfColumns : gameDefinition.numberOfRows,
+        length: type === 'column' ? gameDefinition.numberOfRows : gameDefinition.numberOfColumns,
       }),
     [gameDefinition.numberOfColumns, gameDefinition.numberOfRows, rules, type],
   );
