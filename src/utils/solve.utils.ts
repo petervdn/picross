@@ -102,3 +102,49 @@ export function findGuaranteedBoardItemStatesForRowOrColumn({
     return alwaysExcluded[index] === 0 ? 0 : entry;
   });
 }
+
+/**
+ * Does two calls to findGuaranteedBoardItemStatesForRowsOrColumns,
+ * one for rows and one for the columns.
+ * @param gameDefinition
+ * @param boardState
+ * @param type
+ */
+export function setGuaranteedBoardItemStates({
+  gameDefinition,
+  boardState,
+  startWith = 'row',
+}: {
+  gameDefinition: GameDefinition;
+  boardState: BoardState;
+  startWith?: RowOrColumn;
+}) {
+  const newBoardState = applyGuaranteedStates({
+    guaranteedStates: findGuaranteedBoardItemStatesForRowsOrColumns({
+      type: startWith,
+      boardState,
+      gameDefinition,
+    }),
+    boardState,
+    type: startWith,
+  });
+
+  const type = startWith === 'row' ? 'column' : 'row';
+  return applyGuaranteedStates({
+    guaranteedStates: findGuaranteedBoardItemStatesForRowsOrColumns({
+      type,
+      boardState: newBoardState,
+      gameDefinition,
+    }),
+    boardState: newBoardState,
+    type,
+  });
+}
+
+export function solve({
+  gameDefinition,
+  boardState,
+}: {
+  gameDefinition: GameDefinition;
+  boardState: BoardState;
+}) {}

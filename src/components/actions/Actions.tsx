@@ -3,6 +3,7 @@ import { RowOrColumn } from '@/types/misc.types';
 import {
   applyGuaranteedStates,
   findGuaranteedBoardItemStatesForRowsOrColumns,
+  setGuaranteedBoardItemStates,
 } from '@/utils/solve.utils';
 import { useGameStore } from '@/store/game.store';
 import { useUiStore } from '@/store/ui.store';
@@ -40,6 +41,12 @@ export function Actions() {
   const onPermutationsClick = () => {
     setShowPermutations(!showPermutations);
   };
+  const onSolveClick = () => {
+    if (!gameDefinition) {
+      return;
+    }
+    setBoardState(setGuaranteedBoardItemStates({ boardState, gameDefinition }));
+  };
 
   return (
     <>
@@ -50,11 +57,14 @@ export function Actions() {
       <button type="button" onClick={onPermutationsClick}>
         Permutations
       </button>
-      <button type="button" onClick={() => onTestClick('row')}>
-        Find overlaps for rows
-      </button>
-      <button type="button" onClick={() => onTestClick('column')}>
-        Find overlaps for columns
+      {/*<button type="button" onClick={() => onTestClick('row')}>*/}
+      {/*  Find overlaps for rows*/}
+      {/*</button>*/}
+      {/*<button type="button" onClick={() => onTestClick('column')}>*/}
+      {/*  Find overlaps for columns*/}
+      {/*</button>*/}
+      <button type="button" onClick={onSolveClick}>
+        Solve
       </button>
     </>
   );
