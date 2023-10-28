@@ -1,4 +1,9 @@
-import { filterPermutations, getAllPermutationsForRules, getRowOrColumn } from '@/utils/game.utils';
+import {
+  boardStatesAreEqual,
+  filterPermutations,
+  getAllPermutationsForRules,
+  getRowOrColumn,
+} from '@/utils/game.utils';
 import { BoardState, GameDefinition, RowOrColumn } from '@/types/misc.types';
 import { getItemKey } from '@/store/game.store';
 
@@ -8,6 +13,7 @@ import { getItemKey } from '@/store/game.store';
  */
 type GuaranteedStates = Array<0 | 1 | undefined>;
 
+// todo add description
 export function applyGuaranteedStates({
   type,
   guaranteedStates,
@@ -110,6 +116,7 @@ export function findGuaranteedBoardItemStatesForRowOrColumn({
  * @param boardState
  * @param type
  */
+// todo rename
 export function setGuaranteedBoardItemStates({
   gameDefinition,
   boardState,
@@ -118,7 +125,7 @@ export function setGuaranteedBoardItemStates({
   gameDefinition: GameDefinition;
   boardState: BoardState;
   startWith?: RowOrColumn;
-}) {
+}): BoardState {
   const newBoardState = applyGuaranteedStates({
     guaranteedStates: findGuaranteedBoardItemStatesForRowsOrColumns({
       type: startWith,
@@ -139,6 +146,34 @@ export function setGuaranteedBoardItemStates({
     boardState: newBoardState,
     type,
   });
+}
+
+export function findGuaranteedStatesUntilNoChanges({
+  boardState,
+  gameDefinition,
+}: {
+  gameDefinition: GameDefinition;
+  boardState: BoardState;
+}) {
+  let numberOfIterations = 0;
+  let currentBoardState: BoardState = boardState;
+  let newBoardState: BoardState | undefined = undefined;
+  do {
+    numberOfIterations++;
+    if (newBoardState !== undefined) {
+      currentBoardState = newBoardState;
+    }
+    newBoardState = setGuaranteedBoardItemStates({
+      gameDefinition,
+      boardState: currentBoardState,
+    });
+  } while (
+    newBoardState !== undefined &&
+    !boardStatesAreEqual(currentBoardState, newBoardState) &&
+    numberOfIterations < 1000
+  );
+
+  return { boardState: newBoardState, numberOfIterations };
 }
 
 export function solve({

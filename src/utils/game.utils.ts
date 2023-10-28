@@ -185,6 +185,12 @@ export function filterPermutations(
   });
 }
 
+/**
+ * Checks if two board states are equal.
+ *
+ * @param boardState1
+ * @param boardState2
+ */
 export function boardStatesAreEqual(boardState1: BoardState, boardState2: BoardState): boolean {
   function getKeys(boardState: BoardState) {
     return Object.keys(boardState).filter((key) => boardState[key] !== undefined);

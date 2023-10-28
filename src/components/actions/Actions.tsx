@@ -3,7 +3,7 @@ import { RowOrColumn } from '@/types/misc.types';
 import {
   applyGuaranteedStates,
   findGuaranteedBoardItemStatesForRowsOrColumns,
-  setGuaranteedBoardItemStates,
+  findGuaranteedStatesUntilNoChanges,
 } from '@/utils/solve.utils';
 import { useGameStore } from '@/store/game.store';
 import { useUiStore } from '@/store/ui.store';
@@ -45,7 +45,10 @@ export function Actions() {
     if (!gameDefinition) {
       return;
     }
-    setBoardState(setGuaranteedBoardItemStates({ boardState, gameDefinition }));
+
+    const result = findGuaranteedStatesUntilNoChanges({ boardState, gameDefinition });
+    setBoardState(result.boardState);
+    console.log(result);
   };
 
   return (
