@@ -1,11 +1,5 @@
 import { create } from 'zustand';
-import {
-  BoardItemState,
-  BoardPosition,
-  BoardPositionKey,
-  BoardState,
-  GameDefinition,
-} from '@/types/misc.types';
+import { BoardItemState, BoardPosition, BoardState, GameDefinition } from '@/types/misc.types';
 
 type GameStore = {
   setItemState: (props: {
@@ -34,6 +28,6 @@ export const useGameStore = create<GameStore>((set) => ({
 }));
 
 // todo: clearer name + move
-export function getItemKey({ row, column }: BoardPosition): BoardPositionKey {
+export function getItemKey({ row, column }: BoardPosition): string {
   return `${column}x${row}`;
 }

@@ -184,3 +184,15 @@ export function filterPermutations(
     return true;
   });
 }
+
+export function boardStatesAreEqual(boardState1: BoardState, boardState2: BoardState): boolean {
+  function getKeys(boardState: BoardState) {
+    return Object.keys(boardState).filter((key) => boardState[key] !== undefined);
+  }
+  const keys1 = getKeys(boardState1);
+  const keys2 = getKeys(boardState2);
+
+  return (
+    keys1.length === keys2.length && keys1.every((key) => boardState1[key] === boardState2[key])
+  );
+}
